@@ -1,5 +1,7 @@
 package cryptopals.set1;
 
+import java.util.Base64;
+
 public class Challenge1 {
   private static int toDigit(char hexChar) {
     int digit = Character.digit(hexChar, 16);
@@ -27,5 +29,25 @@ public class Challenge1 {
       output.append(byteToHex(input[i]));
     }
     return output.toString();
+  }
+  public static byte[] decodeHex(String input) {
+    if (input.length() % 2 == 1) {
+      throw new IllegalArgumentException(
+        "Invalid hexadecimal string supplied."
+      );
+    }
+
+    byte[] bytes = new byte[input.length() / 2];
+    for (int i = 0; i < input.length(); i += 2) {
+      bytes[i / 2] = hexToByte(input.substring(i, i + 2));
+    }
+    return bytes;
+  }
+  public static String hexToBase64(String input) {
+    // convert hex string to bytes
+    byte[] hex = decodeHex(input);
+    // then convert byte string to base64
+    String b64 = Base64.getEncoder().encodeToString(hex);
+    return b64;
   }
 }
